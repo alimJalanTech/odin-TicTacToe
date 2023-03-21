@@ -59,13 +59,13 @@ const Game = (() => {
       return;
     }
 
-    const curPlayer = players[currentPlayerIndex].name;
-    const curMark = players[currentPlayerIndex].mark;
-    gameBoard.update(index, curMark);
+    const currentPlayer = players[currentPlayerIndex].name;
+    const currentMark = players[currentPlayerIndex].mark;
+    gameBoard.update(index, currentMark);
     currentPlayerIndex = currentPlayerIndex === 0 ? 1 : 0;
-    if (checkForWin(gameBoard.getGameboard(), curMark)) {
+    if (checkForWin(gameBoard.getGameboard(), currentMark)) {
       gameOver = true;
-      alert(`${curPlayer} with ${curMark} won!`);
+      alert(`${currentPlayer} with ${currentMark} won!`);
       restart();
     } else if (checkForTie(gameBoard.getGameboard())) {
       gameOver = true;
@@ -104,7 +104,7 @@ function fillBoard() {
   return board;
 }
 
-function checkForWin(board, curMark) {
+function checkForWin(board, currentMark) {
   const winningWay = [
     [0, 1, 2],
     [3, 4, 5],
@@ -117,8 +117,7 @@ function checkForWin(board, curMark) {
   ];
   for (let i = 0; i < 8; i++) {
     const [a, b, c] = winningWay[i];
-    if (board[a] == curMark && board[a] === board[b] && board[b] === board[c]) {
-      console.log(board);
+    if (board[a] == currentMark && board[a] === board[b] && board[b] === board[c]) {
       return true;
     }
   }
@@ -126,14 +125,13 @@ function checkForWin(board, curMark) {
 }
 
 function checkForTie(board) {
-  for (let i = 0; i < 9; i++) {
-    if (board[i] !== "") {
-      continue;
-    } else {
-      return false;
+  let isTie = true;
+  board.forEach((cell) => {
+    if (cell === "") {
+      isTie = false;
     }
-  }
-  return true;
+  });
+  return isTie;
 }
 
 const startButton = document.querySelector(".start-button");
